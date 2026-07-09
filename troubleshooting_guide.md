@@ -1,10 +1,28 @@
 # Troubleshooting Guide
 
----
-
 # Issue 1
 
-## Docker Build Failed
+## Docker Daemon Not Running
+
+Error:
+
+```text
+failed to connect to dockerDesktopLinuxEngine
+```
+
+Root Cause:
+
+Docker Engine unavailable.
+
+Fix:
+
+Start Docker Desktop.
+
+---
+
+# Issue 2
+
+## Docker Build Context Missing
 
 Error:
 
@@ -12,9 +30,9 @@ Error:
 docker buildx build requires 1 argument
 ```
 
-Cause:
+Root Cause:
 
-Missing build context.
+Build context not supplied.
 
 Wrong:
 
@@ -28,57 +46,11 @@ Correct:
 docker build -t flask-app:v1 .
 ```
 
-Learning:
-
-Docker needs a build context.
-
-The dot (.) means current directory.
-
----
-
-# Issue 2
-
-## Docker Daemon Not Running
-
-Error:
-
-```text
-failed to connect to dockerDesktopLinuxEngine
-```
-
-Cause:
-
-Docker Desktop not running.
-
-Investigation:
-
-```bash
-docker info
-```
-
-Fix:
-
-Start Docker Desktop.
-
-Learning:
-
-Docker CLI != Docker Engine
-
-Architecture:
-
-CLI
-|
-v
-Docker Daemon
-|
-v
-Containers
-
 ---
 
 # Issue 3
 
-## Dockerfile Missing
+## Dockerfile Not Found
 
 Error:
 
@@ -86,73 +58,21 @@ Error:
 failed to read dockerfile
 ```
 
-Cause:
+Root Cause:
 
-Dockerfile missing or incorrectly named.
-
-Investigation:
-
-```bash
-ls -la
-```
+Dockerfile missing or incorrect name.
 
 Fix:
-
-Rename:
-
-```text
-DockerFile
-```
-
-to:
 
 ```text
 Dockerfile
 ```
 
-Learning:
-
-Linux containers are case-sensitive.
+must exist.
 
 ---
 
 # Issue 4
-
-## Slow Docker Build
-
-Symptom:
-
-9 MB context took 580+ seconds.
-
-Cause:
-
-Files being unnecessarily copied.
-
-Likely:
-
-```text
-.venv
-.git
-```
-
-Fix:
-
-Create .dockerignore
-
-```text
-.venv
-.git
-__pycache__
-.pytest_cache
-```
-
-Learning:
-
-Docker uploads the entire build context.
-
----
-
-# Issue 5
 
 ## Git Push Rejected
 
@@ -162,29 +82,180 @@ Error:
 non-fast-forward
 ```
 
-Cause:
+Root Cause:
 
-Remote repository already contained commits.
-
-Investigation:
-
-```bash
-git fetch origin
-git log
-```
+Remote history differs.
 
 Fix:
 
 ```bash
-git pull --allow-unrelated-histories
+git pull
 ```
 
-or
+then push.
 
-```bash
-git push --force
+---
+
+# Issue 5
+
+## Pipeline Option Missing
+
+Observation:
+
+Only Freestyle Project available.
+
+Investigation:
+
+Checked plugins.
+
+Finding:
+
+No Pipeline plugins installed.
+
+Root Cause:
+
+Incomplete plugin installation.
+
+---
+
+# Issue 6
+
+## Jenkins Plugin Installation Failure
+
+Error:
+
+```text
+java.net.SocketTimeoutException
 ```
 
-Learning:
+Findings:
 
-Local and remote commit histories must align.
+- Browser access successful
+- Jenkins URL access successful
+- Plugin installation failed
+
+Further Investigation:
+
+Plugin directory contained:
+
+```text
+82 .jpi.tmp files
+```
+
+All:
+
+```text
+0 bytes
+```
+
+Root Cause:
+
+Plugin downloads never completed.
+
+Impact:
+
+```text
+Git Plugin unavailable
+Pipeline Plugin unavailable
+Workflow Plugins unavailable
+```
+
+---
+
+# Issue 7
+
+## Execute Shell on Windows
+
+Error:
+
+```text
+Cannot run program "sh"
+```
+
+Root Cause:
+
+Linux shell used on Windows.
+
+Fix:
+
+```text
+Execute Windows batch command
+```
+
+---
+
+# Issue 8
+
+## pytest Command Not Found
+
+Error:
+
+```text
+pytest is not recognized
+```
+
+Root Cause:
+
+PATH issue.
+
+Fix:
+
+```cmd
+python -m pytest
+```
+
+---
+
+# Issue 9
+
+## Container Deployment Failure
+
+Error:
+
+```text
+No such container: flask-app:
+```
+
+Root Cause:
+
+Typographical error.
+
+Invalid:
+
+```text
+flask-app:
+```
+
+Correct:
+
+```text
+flask-app
+```
+
+---
+
+# Troubleshooting Methodology
+
+Always follow:
+
+## Symptom
+
+What failed?
+
+## Evidence
+
+What logs prove it?
+
+## Root Cause
+
+Why did it happen?
+
+## Resolution
+
+How was it fixed?
+
+## Prevention
+
+How can recurrence be avoided?
+
+This methodology is more important than any individual command.

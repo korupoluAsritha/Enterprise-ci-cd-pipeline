@@ -1,111 +1,316 @@
 # DevOps Learning Journal
 
-## Project
+# Core Philosophy
 
-Enterprise CI/CD Pipeline
+A DevOps Engineer should understand:
 
-## Goal
+```text
+Architecture
+Automation
+Troubleshooting
+Root Cause Analysis
+```
 
-Build a production-style CI/CD pipeline using:
-
-- Git
-- GitHub
-- Flask
-- Docker
-- Jenkins
-
-Architecture:
-
-Developer
-|
-v
-GitHub
-|
-v
-Jenkins
-|
-+--> Build
-+--> Test
-+--> Docker Build
-+--> Deploy
+not just tool commands.
 
 ---
 
-# Skills Learned
+# Git Learnings
 
-## Git
+## What is Git?
 
-### Commands
+Distributed version control system.
+
+Purpose:
+
+- Track changes
+- Maintain history
+- Enable collaboration
+
+---
+
+## Important Concepts
+
+### Repository
+
+Collection of files and commits.
+
+### Commit
+
+Snapshot of changes.
+
+### Branch
+
+Independent line of development.
+
+### Remote
+
+External repository.
+
+Example:
 
 ```bash
-git init
-git add .
-git commit -m "message"
-git push origin main
-git pull origin main
-git fetch origin
 git remote -v
 ```
 
-### Concepts
+---
 
-- Repository
-- Commit
-- Branch
-- Remote
-- Origin
+## Learning
+
+Git push failures are usually:
+
+```text
+History conflicts
+Authentication issues
+Branch protection
+```
+
+not Git failures.
 
 ---
 
-## Docker
+# Docker Learnings
 
-### Commands
+## Docker Architecture
+
+```text
+Docker CLI
+       |
+       v
+Docker Daemon
+       |
+       v
+Images
+       |
+       v
+Containers
+```
+
+---
+
+## Image
+
+Immutable application template.
+
+Example:
 
 ```bash
-docker build -t image .
-docker images
-docker run -d -p 5000:5000 image
-docker ps
-docker logs container
-docker exec -it container sh
+docker build -t flask-app:v1 .
 ```
-
-### Concepts
-
-Image
-
-Blueprint for container.
-
-Container
-
-Running instance of image.
-
-Dockerfile
-
-Instructions used to build image.
 
 ---
 
-## Jenkins
+## Container
 
-### Freestyle Job
+Running process created from image.
 
-UI driven.
+Example:
 
-### Pipeline Job
-
-Code driven.
-
-### Jenkinsfile
-
-Stores pipeline definition.
-
+```bash
+docker run flask-app:v1
 ```
-GitHub
-|
-v
-Jenkins Pipeline
-|
-v
-Build Stages
+
+---
+
+## Important Learning
+
+Image:
+
+```text
+Static
 ```
+
+Container:
+
+```text
+Running
+```
+
+---
+
+# Jenkins Learnings
+
+## Jenkins Architecture
+
+```text
+Jenkins Controller
+         |
+         +--> Jobs
+         |
+         +--> Workspaces
+         |
+         +--> Build History
+```
+
+---
+
+## Workspace
+
+Purpose:
+
+Temporary build location.
+
+Example:
+
+```text
+C:\ProgramData\Jenkins\.jenkins\workspace
+```
+
+---
+
+## Build Lifecycle
+
+```text
+Build Trigger
+      |
+Workspace Creation
+      |
+Source Checkout
+      |
+Testing
+      |
+Artifact Build
+      |
+Deployment
+```
+
+---
+
+# CI/CD Learnings
+
+## Continuous Integration
+
+Purpose:
+
+Verify every code change quickly.
+
+Activities:
+
+```text
+Build
+Test
+Validate
+```
+
+---
+
+## Continuous Delivery
+
+Purpose:
+
+Deploy validated code automatically.
+
+Activities:
+
+```text
+Docker Build
+Deployment
+Health Check
+```
+
+---
+
+# Deployment Learnings
+
+Current Strategy:
+
+```text
+Stop
+Remove
+Deploy
+```
+
+Flow:
+
+```text
+Current Container
+      |
+Stop
+      |
+Remove
+      |
+Deploy New Version
+```
+
+---
+
+# Health Checks
+
+Build success does not guarantee:
+
+```text
+Application Success
+```
+
+Need:
+
+```text
+Health Verification
+```
+
+Example:
+
+```bash
+curl http://localhost:5000
+```
+
+---
+
+# Build Numbers
+
+Jenkins automatically generates:
+
+```text
+1
+2
+3
+4
+...
+```
+
+Used for:
+
+```text
+Docker Image Versioning
+```
+
+Example:
+
+```text
+flask-app:9
+```
+
+---
+
+# Root Cause Analysis Framework
+
+Always ask:
+
+1. What failed?
+2. Where did it fail?
+3. What evidence proves it?
+4. What caused it?
+5. What fixed it?
+6. How can recurrence be prevented?
+
+---
+
+# Future Learning Areas
+
+- Jenkins Pipelines
+- GitHub Webhooks
+- PostgreSQL
+- Docker Compose
+- Docker Hub
+- Kubernetes
+- Prometheus
+- Grafana
+- Trivy
+- SonarQube
+- Load Testing
+
+---
+
+# Most Valuable Lesson
+
+Learning through troubleshooting creates deeper understanding than learning through tutorials alone.
